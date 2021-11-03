@@ -5,16 +5,18 @@ USE employees_db;
 
 CREATE TABLE departments(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    deptName VARCHAR(30) NOT NULL,
+    name VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE roles(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    jobTitleId VARCHAR(30) NOT NULL,
+    title VARCHAR(30) NOT NULL,
+    salary DECIMAL,
     department_id INT,
     FOREIGN KEY (department_id)
-    REFERENCES departments(id) 
-    salaryId
+    REFERENCES departments(id)
+    ON DELETE SET NULL 
+   
 );
 
 CREATE TABLE employees(
@@ -28,5 +30,6 @@ CREATE TABLE employees(
     manager_id INT,
     FOREIGN KEY (manager_id)
     REFERENCES employees(id)
+    
 );
 

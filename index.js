@@ -1,7 +1,7 @@
 // imports
 const { prompt } = require("inquirer");
 const express = require('express')
-const db = require("./db");
+// const db = require("./db");
 const mysql = require('mysql2');
 const inquirer = require("inquirer");
 const app = express();
@@ -17,7 +17,7 @@ const db = mysql.createConnection(
     {
         host: 'localhost',
         user: 'root',
-        password:'root'
+        password:'root',
         database: 'employees_db'
     },
     console.log(`Connected to the employees_db database`)
@@ -26,49 +26,90 @@ const db = mysql.createConnection(
 init();
 
 function viewDepartments(){
-    
-}
+    allDept().then(
+        res => {
+            console.log(res);
+            init()
+        }
+    )
+};
 
 function viewRoles(){
-
-
-
-}
+    allRoles().then(
+        res => {
+            console.table(res);
+            init();
+        }
+    )
+};
 
 function viewEmployees(){
- //  run the db query, get results, display result with console.table
- `SELECT * from employees e
- LEFT JOIN roles r ON e.role_id = r.id
- LEFT JOIN departmets d ON XXXXX `
+    allEmployees().then(
+        res => {
+            console.table(res)
+            init();
 
- `SELECT * CONCAT(e.first_name, ' ', e.last_name) AS employee_name from employees e
- LEFT JOIN employees e2 ON e.manager_id = e2.id
- LEFT JOIN roles r ON e.role_id = r.id
- LEFT JOIN departmets d ON XXXXX `
-
-
+    })
 }
 
 function addDepartment(){
+    inquirer
+    .prompt([
+        {
+            type:"input",
+            message:"Please enter the name of the department: ",
+            name: "department"
+        }
+    ])
+    .then(
+        res => {
+            newDepartment(res.department);
 
-
-
+        }
+   
 }
-
 function addRole(){
-
-
+    inquirer
+    .prompt([
+        {
+            type: "input",
+            message: "Please enter the name of the role: ",
+            name: "role_name"
     
-}
+        },
+        {
+            type: "input",
+            message: "Please enter the salary of the role: ",
+            name: "salary"
+        },
+        {
+            type: "list",
+            message: "Please enter the department this role belongs to: ",
+            name
+            choices: [...res]
+        }
+    ])
+    .then(
+        res => {
+            newRole(res.role_name, res.salary, res.depat)
+        }
+    )   
+};
 
-function addEmployee(){
-    // query list of all roles
-    db.query('get all roles.', (err, res) => {
-        // results (array of roles)
-        // 
-    }
+function addEmployee() {
+    allManagers().then(
+        res => {
+            inquirer
+            .prompt([
+                {
+                    type: "input",
+                    message: "Please enter the employee's first name: "
+                    name: "first"
 
-
+                }
+            ])
+        }
+    )
 }
 
 
@@ -78,7 +119,7 @@ function init(){
     inquirer
         .prompt({
             type: 'list',
-            name: "todo"
+            name: "todo",
             message: 'Employee Tracker Main Menu',
             choices:[
                 'View All Departments',
@@ -124,9 +165,32 @@ function init(){
                     console.log('timed out...')
             }
 
-        }));
+        }))};
+function allDept() {
 
 
+}
+
+function allRoles() {
+ // query list of all roles
+ db.query('get all roles.', (err, res) => {
+    // results (array of roles)
+    // 
+})
+
+}
+
+function allEmployees() {
+    
+}
+
+function newDepartment() {
+
+}
+
+function newRole() {
+
+}
 // - departments
     // - table: SELECT *
         // - department names
