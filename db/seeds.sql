@@ -21,22 +21,22 @@ VALUES  ("Project Manager", 120000, 1),                 -- 1
         ("Wire Technician", 52000, 4);                  -- 12    
 
 INSERT INTO employees (first_name, last_name, role_id, manager_id)
-VALUES  ("Connor", "Jones", 11, 10),                     
-        ("Scott", "Farmer", 12, 10),                     
+VALUES  ("Connor", "Jones", 10, null),                     
+        ("Scott", "Farmer", 11, 10),                     
         ("Kevin", "Boone", 12, 10),                      
         ("George", "Brown", 12, 10),                     
-        ("Ricky", "Schults", 10, null),                 
-        ("Sara", "Archer", 8, 7),                      
+        ("Ricky", "Schults", 12, 10),                 
+        ("Sara", "Archer", 7, null),                      
         ("Lou", "Dobbs", 8, 7),                        
         ("Peter", "Prafke", 8, 7),                     
         ("Shawn", "Michaels", 9, 7),                      
-        ("Donald", "Easton", 7, null),                  
-        ("Barry", "White", 6, 5),
+        ("Donald", "Easton", 8, 7),                  
+        ("Barry", "White", 5, null),
         ("Mike", "Donuts", 6, 5),
         ("Alice", "Bonnette",6, 5),
-        ("Bailey", "Yessim", 5, null),
-        ("Jerry", "Lawson", 1, 2),
+        ("Bailey", "Yessim", 6, 5),
+        ("Jerry", "Lawson", 2, null),
         ("Justin", "Baker", 1, 2),
         ("Angela", "Swhartz", 3, 2),
         ("Mel", "Jennings", 4, 2),
-        ("Alexander", "Bright", 2, null);
+        ("Alexander", "Bright", 1, 2);

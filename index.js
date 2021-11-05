@@ -4,11 +4,13 @@ const express = require('express')
 // const db = require("./db");
 const mysql = require('mysql2');
 const inquirer = require("inquirer");
+const { resolve } = require("path/posix");
 const app = express();
 
 // express middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public');
 
 const PORT = process.env.PORT || 3001;
 
@@ -60,14 +62,14 @@ function addDepartment(){
             message:"Please enter the name of the department: ",
             name: "department"
         }
-    ])
     .then(
         res => {
             newDepartment(res.department);
-
-        }
+                console.log('Added New Department');
+                init();
+        })
+    ]); 
    
-}
 function addRole(){
     inquirer
     .prompt([
@@ -85,7 +87,7 @@ function addRole(){
         {
             type: "list",
             message: "Please enter the department this role belongs to: ",
-            name
+            name: "de"
             choices: [...res]
         }
     ])
@@ -103,15 +105,50 @@ function addEmployee() {
             .prompt([
                 {
                     type: "input",
-                    message: "Please enter the employee's first name: "
+                    message: "Please enter the employee's first name: ",
                     name: "first"
 
+                },
+                {
+                    type: "input",
+                    message: "Please enter the employee's last name: ",
+                    name: "last"
+                },
+                {
+                    type: "list",
+                    message: "Please select their manger: ",
+                    name: "manager"
                 }
             ])
+            .then(
+                res => {
+                    rolePrompt(res)
+                }
+            )
+
         }
     )
 }
 
+function updateRole() {
+    rolesTable().then(
+        res => {
+            inquirer
+            .prompt([
+                {
+                    type: "list",
+                    message:"Please select Employee to udate: ",
+                    name: "employeeToUpdate",
+                    choices: [...res]
+                }
+            ])
+            .then(
+                res => {
+                    roleq
+                }
+            )
+    )
+}
 
 
 function init(){
@@ -131,7 +168,8 @@ function init(){
                 'Update An Employee Role'
             ]
         })
-        .then((res => {
+        .then((
+            res => {
             switch(res.todo) {
                 // - view all Departments allDept
                 case 'View All Departments':
@@ -167,29 +205,104 @@ function init(){
 
         }))};
 function allDept() {
-
-
-}
+    let promise = new Promise((resolve, reject) => {
+            db.query(`SELECT name, id AS value FROM departments`, (err, results) => {
+                if (err)
+                    reject(err);
+                resolve(results);
+            });
+        })
+};
 
 function allRoles() {
- // query list of all roles
- db.query('get all roles.', (err, res) => {
-    // results (array of roles)
-    // 
-})
-
-}
+    let promise = new Promise((resolve, reject) => {
+        db.query(`SELECT title AS name, id AS value FROM departments`, (err, results) => {
+            if(err)
+                reject (err)
+            resolve (results)
+        })
+    })
+};
 
 function allEmployees() {
+    let promise = new Promise((resolve, reject) => {
+        db.query(`SELECT name, id AS value FROM departments`, (err, results) => {
+            if(err)
+                reject (err)
+            resolve (results)
+        })
+    })
+};
     
 }
 
 function newDepartment() {
+    db.query('SELECT name, id AS value FROM departments', (err, results) => {
+            if(err)
+                reject (err)
+            resolve (results)
+        })
+    })
+    
+}
+
+function newRole(title, salary, department_id) {
+    db.query('INSERT INTO departments (name) VALUES (?)', name, (err, results) => {
+        if(err)
+            console.log(err)
+        return results
+
+    })
+}
+
+
+
+function allManagers() {
 
 }
 
-function newRole() {
+function deptTable() {
 
+}
+
+function rolesTable() {
+    let promise = new Promise((resolve, reject) => {
+        db.query('SELECT roles.id, title, name AS Department, salary FROM roles JOIN department ON department_id')
+
+}
+
+function employeesTable() {
+
+}
+
+function rolePrompt(prevData){
+    allRoles().then(
+        res => {
+            inquirer
+            .prompt([
+                {
+                    type: "list",
+                    message:"Please select role: ",
+                    name: "role",
+                    choices: [...res]
+                }
+            ])
+            .then(
+                res => {
+                    if(Object.keys(prevData).length == 3)
+
+                }
+            )
+        }
+    )
+}
+
+function insertEmployee(first, last, role, manager) {
+    db.query('INSERT INTO ROLES employees (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)', [first, last, role, manager], (err, results) => {
+        if(err)
+            console.log(err)
+        return results
+    }
 }
 // - departments
     // - table: SELECT *
