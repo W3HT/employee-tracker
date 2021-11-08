@@ -18,10 +18,12 @@
   },
   "homepage": "https://github.com/W3HT/employee-tracker#readme",
   "dependencies": {
+    "console.table": "^0.10.0",
     "express": "^4.17.1",
     "inquirer": "^8.2.0",
     "mysql2": "^2.3.2",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "path-posix": "^1.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.14"

@@ -1,13 +1,15 @@
 USE employees_db;
 
 INSERT INTO departments (name)
-VALUES  ("Management"),
+VALUES  
+        ("Management"),
         ("IT"),
         ("Engineering"),
         ("Shop");
 
 INSERT INTO roles (title, salary, department_id)
-VALUES  ("Project Manager", 120000, 1),                 -- 1
+VALUES  
+        ("Project Manager", 120000, 1),                 -- 1
         ("Account Manger", 137000, 1),                  -- 2
         ("Human Resources", 58000, 1),                  -- 3    
         ("Purchaser", 62000, 1),                         -- 4  
@@ -21,22 +23,23 @@ VALUES  ("Project Manager", 120000, 1),                 -- 1
         ("Wire Technician", 52000, 4);                  -- 12    
 
 INSERT INTO employees (first_name, last_name, role_id, manager_id)
-VALUES  ("Connor", "Jones", 10, null),                     
-        ("Scott", "Farmer", 11, 10),                     
-        ("Kevin", "Boone", 12, 10),                      
-        ("George", "Brown", 12, 10),                     
-        ("Ricky", "Schults", 12, 10),                 
-        ("Sara", "Archer", 7, null),                      
-        ("Lou", "Dobbs", 8, 7),                        
-        ("Peter", "Prafke", 8, 7),                     
-        ("Shawn", "Michaels", 9, 7),                      
-        ("Donald", "Easton", 8, 7),                  
-        ("Barry", "White", 5, null),
-        ("Mike", "Donuts", 6, 5),
-        ("Alice", "Bonnette",6, 5),
-        ("Bailey", "Yessim", 6, 5),
-        ("Jerry", "Lawson", 2, null),
-        ("Justin", "Baker", 1, 2),
-        ("Angela", "Swhartz", 3, 2),
-        ("Mel", "Jennings", 4, 2),
-        ("Alexander", "Bright", 1, 2);
+VALUES  
+        ("Connor", "Jones", 10, null),    -- 1                 
+        ("Scott", "Farmer", 11, 1),       -- 2            
+        ("Kevin", "Boone", 12, 1),        -- 3              
+        ("George", "Brown", 12, 1),       -- 4           
+        ("Ricky", "Schults", 12, 1),      -- 5           
+        ("Sara", "Archer", 7, null),      -- 6                
+        ("Lou", "Dobbs", 8, 6),           -- 7             
+        ("Peter", "Prafke", 8, 6),        -- 8             
+        ("Shawn", "Michaels", 9, 6),      -- 9                
+        ("Donald", "Easton", 8, 6),       -- 10            
+        ("Barry", "White", 5, null),      -- 11
+        ("Mike", "Donuts", 6, 11),        -- 12
+        ("Alice", "Bonnette",6, 11),      -- 13      
+        ("Bailey", "Yessim", 6, 11),      -- 14 
+        ("Jerry", "Lawson", 2, null),     -- 15
+        ("Justin", "Baker", 1, 15),       -- 16
+        ("Angela", "Swhartz", 3, 15),     -- 17
+        ("Mel", "Jennings", 4, 15),       -- 18
+        ("Alexander", "Bright", 1, 15);   -- 19
