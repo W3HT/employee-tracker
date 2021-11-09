@@ -56,13 +56,14 @@ function addDepartment() {
       type: "input",
       message: "Please enter the name of the department: ",
       name: "department",
-    }.then((res) => {
+    }])
+    .then((res) => {
       newDepartment(res.department);
       console.log("Added New Department");
       init();
-    }),
-  ]);
-}
+    })}
+  
+
 
 function addRole() {
   allDept().then((res) => {
@@ -86,7 +87,9 @@ function addRole() {
         },
       ])
       .then((res) => {
-        newRole(res.role_name, res.salary, res.depat);
+        newRole(res.role_name, res.salary, res.department);
+        console.log(`Successfully Added New Role!`)
+        init()
       });
   });
 }
@@ -109,6 +112,7 @@ function addEmployee() {
           type: "list",
           message: "Please select their manger: ",
           name: "manager",
+          choices: [...res],
         },
       ])
       .then((res) => {
@@ -118,7 +122,7 @@ function addEmployee() {
 }
 
 function updateRole() {
-  rolesTable().then((res) => {
+  allEmployees2().then((res) => {
     inquirer
       .prompt([
         {
@@ -129,7 +133,7 @@ function updateRole() {
         },
       ])
       .then((res) => {
-        roleq;
+        rolePrompt(res)
       });
   });
 }
@@ -187,7 +191,7 @@ function init() {
 }
 function allDept() {
   let promise = new Promise((resolve, reject) => {
-    db.query(`SELECT name, id AS value FROM departments`, (err, results) => {
+    db.query(`SELECT name AS "Department", id as value FROM departments`, (err, results) => {
       if (err) reject(err);
       resolve(results);
     });
@@ -198,7 +202,7 @@ function allDept() {
 function allRoles() {
   let promise = new Promise((resolve, reject) => {
     db.query(
-      `SELECT title AS name, id AS value FROM roles`,
+      `SELECT id as value, title as "Job Title" FROM roles`,
       (err, results) => {
         if (err) reject(err);
         resolve(results);
@@ -210,7 +214,7 @@ function allRoles() {
 
 function allEmployees() {
   let promise = new Promise((resolve, reject) => {
-    db.query(`SELECT first_name, last_name, role_id, manager_id FROM employees`, (err, results) => {
+    db.query(`SELECT id as value, CONCAT(first_name, " ", last_name) AS "Employee Name", role_id as "Role ID #", manager_id AS "Manager ID #" FROM employees`, (err, results) => {
       if (err) reject(err);
       resolve(results);
     });
@@ -218,42 +222,40 @@ function allEmployees() {
   return promise
 }
 
-function newDepartment() {
-  db.query("SELECT name, id AS value FROM departments", (err, results) => {
-    if (err) reject(err);
-    resolve(results);
+function allEmployees2() {
+  let promise = new Promise((resolve, reject) => {
+    db.query(`SELECT CONCAT(employees.first_name, " ", employees.last_name) as name, id FROM employees`, (err, results) => {
+      if (err) reject(err);
+      resolve(results);
+    });
+  });
+  return promise
+}
+
+function newDepartment(name) {
+  db.query(`INSERT INTO departments (name) VALUES (?)`, name, (err, results) => {
+    if (err) console.log(err);
+    return results;
   });
 }
 
 function newRole(title, salary, department_id) {
-  db.query(
-    "INSERT INTO departments (name) VALUES (?)",
-    name,
-    (err, results) => {
+  db.query(`INSERT INTO roles (title, salary, department_id) VALUES (?,?,?)`, [title, salary, department_id], (err, results) => {
       if (err) console.log(err);
       return results;
     }
   );
 }
 
-function allManagers() {}
-
-function deptTable() {
-
-}
-
-function rolesTable() {
+function allManagers() {
   let promise = new Promise((resolve, reject) => {
-    db.query(
-      "SELECT roles.id, title, name AS Department, salary FROM roles JOIN department ON department_id"
-    );
-  });
-  return promise
+    db.query(`SELECT CONCAT(employees.first_name, " ", employees.last_name) AS name, id AS value FROM employees WHERE manager_id IS NULL`, (err, results) => {
+      if(err) console.log(err)
+      resolve (results)
+    })
+  })
+  return promise; 
 }
-
-// function employeesTable() {
-
-// }
 
 function rolePrompt(prevData) {
   allRoles().then((res) => {
@@ -268,53 +270,34 @@ function rolePrompt(prevData) {
       ])
       .then((res) => {
         // if(Object.keys(prevData).length == 3)
+        if(Object.keys(prevData).length == 3 ) {
+         insertEmployee(prevData.first, prevData.last, res.role, prevData.manager);
+        console.log("Successfully Added New Employee")
+      } else {
+          updateEmployee(prevData.emp, res.role)
+          console.log('Successfully Updated Employee Role!')
+      }
+      init();  
       });
   });
 }
 
 function insertEmployee(first, last, role, manager) {
   db.query(
-    "INSERT INTO ROLES employees (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)",
+    "INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)",
     [first, last, role, manager],
     (err, results) => {
       if (err) console.log(err);
       return results;
     }
   );
-}
+};
 
-// - departments
-// - table: SELECT *
-// - department names
-// - department ids
-// - roles
-// - table:
-// - job title
-// - role id
-// - department name & department id
-// - salary
-// - employees
-// - table:
-// - employee id
-// - firstName
-// - lastName
-//  - job title
-// - department
-// - salaries
-// - manager id
-// - add department
-// - prompt
-// - name of department
-// - add to db
-// - add role
-// - prompt for:
-// - name of role, salary, and department id
-// - add to db
-// - add employee
-// - prompt for:
-// - firstName, lastName, role, and  manager id
-// - add to db
-// - update role
-// - prompt for:
-// - employee to update
-// - role table:
+function updateEmployee(role, id) {
+  db.query('UPDATE employees SET role_id = ? where id = ?', [role, id], (err, results) => {
+    if(err) console.log(err);
+    return results
+  });
+};
+
+
